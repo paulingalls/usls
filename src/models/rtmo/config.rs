@@ -13,6 +13,14 @@ impl crate::Config {
             .with_nk(17)
             .with_class_confs(&[0.3])
             .with_keypoint_confs(&[0.5])
+            .with_keypoint_names(&crate::NAMES_COCO_KEYPOINTS_17)
+    }
+
+    pub fn rtmo_t() -> Self {
+        Self::rtmo()
+            .with_model_ixx(0, 2, 416.into())
+            .with_model_ixx(0, 3, 416.into())
+            .with_model_file("t.onnx")
     }
 
     pub fn rtmo_s() -> Self {
