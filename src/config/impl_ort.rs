@@ -316,6 +316,17 @@ impl Config {
     );
 
     impl_ort_field!(
+        dimension_overrides,
+        &[(&str, i64)],
+        |config: &mut crate::ORTConfig, x: &[(&str, i64)]| {
+            config.dimension_overrides = x
+                .iter()
+                .map(|(name, size)| (name.to_string(), *size))
+                .collect();
+        }
+    );
+
+    impl_ort_field!(
         num_inter_threads,
         usize,
         |config: &mut crate::ORTConfig, x: usize| {

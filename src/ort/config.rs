@@ -17,6 +17,13 @@ pub struct ORTConfig {
     pub graph_opt_level: Option<u8>,
     pub num_intra_threads: Option<usize>,
     pub num_inter_threads: Option<usize>,
+    /// Free (symbolic) dimension overrides applied at session creation, as
+    /// `(dimension name, size)` pairs, e.g. `[("batch", 1), ("height", 640), ("width", 640)]`.
+    ///
+    /// Pinning symbolic dims makes shape inference fully static, which lets
+    /// execution providers that only accept static shapes (e.g. CoreML on the
+    /// Neural Engine) take the whole graph instead of falling back to CPU.
+    pub dimension_overrides: Vec<(String, i64)>,
     pub ep: EpConfig,
 }
 
@@ -33,6 +40,7 @@ impl Default for ORTConfig {
             graph_opt_level: Default::default(),
             num_intra_threads: None,
             num_inter_threads: None,
+            dimension_overrides: Vec::new(),
             ep: EpConfig::default(),
         }
     }

@@ -1156,6 +1156,13 @@ impl Engine {
                 .map_err(|e| anyhow::anyhow!("Failed to disable graph optimization: {e}"))?;
         }
 
+        // free dimension overrides: pin symbolic dims so shape inference is static
+        for (name, size) in &config.dimension_overrides {
+            builder = builder
+                .with_dimension_override(name, *size)
+                .map_err(|e| anyhow::anyhow!("Failed to override dimension `{name}`: {e}"))?;
+        }
+
         let session = builder.commit_from_file(model_file)?;
         Ok(session)
     }
